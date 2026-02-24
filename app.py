@@ -1,4 +1,5 @@
 import os
+import json
 import gspread
 from google.oauth2.service_account import Credentials
 from flask import Flask, render_template
@@ -7,22 +8,31 @@ app = Flask(__name__)
 
 # CONFIGURATION
 TARGET_AMOUNT = 1500
-SHEET_NAME = "iftar" # User should ensure this matches their sheet name
+SHEET_NAME = "iftar" # Updated based on user's latest info
 SERVICE_ACCOUNT_FILE = 'service_account.json'
 
 def get_donation_data():
     """Fetches data from Google Sheets or returns mock data if keys are missing."""
-    if not os.path.exists(SERVICE_ACCOUNT_FILE):
-        # MOCK DATA for initial testing/fallback
-        return {
-            "total": 450,
-            "top_3": [200, 150, 100],
-            "error": "service_account.json missing"
-        }
+    creds_json = os.environ.get('GOOGLE_CREDS_JSON')
     
     try:
         scopes = ['https://www.googleapis.com/auth/spreadsheets', 'https://www.googleapis.com/auth/drive']
-        creds = Credentials.from_service_account_file(SERVICE_ACCOUNT_FILE, scopes=scopes)
+        
+        if creds_json:
+            # Load from environment variable (suitable for Render)
+            info = json.loads(creds_json)
+            creds = Credentials.from_service_account_info(info, scopes=scopes)
+        elif os.path.exists(SERVICE_ACCOUNT_FILE):
+            # Load from local file
+            creds = Credentials.from_service_account_file(SERVICE_ACCOUNT_FILE, scopes=scopes)
+        else:
+            # MOCK DATA for initial testing/fallback
+            return {
+                "total": 450,
+                "top_3": [200, 150, 100],
+                "error": "Credentials missing on server. Please add GOOGLE_CREDS_JSON to Render Environment Variables."
+            }
+            
         client = gspread.authorize(creds)
         
         sheet = client.open(SHEET_NAME).sheet1
