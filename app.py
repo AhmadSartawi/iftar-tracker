@@ -17,26 +17,33 @@ def get_donation_data():
     
     try:
         scopes = ['https://www.googleapis.com/auth/spreadsheets', 'https://www.googleapis.com/auth/drive']
+        source = "None"
         
         if creds_json:
-            # Load from environment variable (suitable for Render)
+            source = "Environment Variable (GOOGLE_CREDS_JSON)"
             info = json.loads(creds_json)
-            # FIX: Ensure private_key handles newlines correctly
+            # Triple check newline handling
             if 'private_key' in info:
-                info['private_key'] = info['private_key'].replace('\\n', '\n')
+                info['private_key'] = info['private_key'].strip().replace('\\n', '\n')
             creds = Credentials.from_service_account_info(info, scopes=scopes)
         elif os.path.exists(SERVICE_ACCOUNT_FILE):
-            # Load from local file
-            creds = Credentials.from_service_account_file(SERVICE_ACCOUNT_FILE, scopes=scopes)
+            source = f"Local File ({SERVICE_ACCOUNT_FILE})"
+            with open(SERVICE_ACCOUNT_FILE, 'r') as f:
+                info = json.load(f)
+                if 'private_key' in info:
+                    info['private_key'] = info['private_key'].strip().replace('\\n', '\n')
+                creds = Credentials.from_service_account_info(info, scopes=scopes)
         else:
-            # MOCK DATA for initial testing/fallback
             return {
                 "total": 450,
                 "top_3": [200, 150, 100],
-                "error": "Credentials missing on server. Please add GOOGLE_CREDS_JSON to Render Environment Variables."
+                "error": "No credentials found (check Render Environment Variables)."
             }
             
         client = gspread.authorize(creds)
+        
+        # Log source in case of later errors
+        print(f"Using credentials from: {source}")
         
         sheet = client.open(SHEET_NAME).sheet1
         # Assumes donations are in the first column (Column A)
@@ -58,13 +65,15 @@ def get_donation_data():
         return {
             "total": total,
             "top_3": top_3,
-            "error": None
+            "error": None,
+            "source": source
         }
     except Exception as e:
         return {
             "total": 0,
             "top_3": [],
-            "error": str(e)
+            "error": str(e),
+            "source": source
         }
 
 @app.route('/')
@@ -78,7 +87,8 @@ def index():
         target=TARGET_AMOUNT, 
         progress=progress_percent,
         top_3=data['top_3'],
-        error=data['error']
+        error=data['error'],
+        source=data.get('source', 'Unknown')
     )
 
 if __name__ == '__main__':

@@ -15,7 +15,8 @@
 
         {% if error %}
         <div class="alert">
-            ⚠️ Error: {{ error }}
+            ⚠️ Error: {{ error }}<br>
+            <small>Source: {{ source }}</small>
         </div>
         {% endif %}
 
@@ -47,7 +48,8 @@
         </div>
 
         <div class="footer">
-            Updates automatically on page refresh
+            Updates automatically on page refresh<br>
+            <small>Last Deploy Check: 2026-02-24 15:05</small>
         </div>
     </div>
 </body>
