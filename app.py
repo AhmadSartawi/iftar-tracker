@@ -7,7 +7,7 @@ app = Flask(__name__)
 
 # CONFIGURATION
 TARGET_AMOUNT = 1500
-SHEET_NAME = "افطار رمضان" # User should ensure this matches their sheet name
+SHEET_NAME = "iftar" # User should ensure this matches their sheet name
 SERVICE_ACCOUNT_FILE = 'service_account.json'
 
 def get_donation_data():
