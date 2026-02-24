@@ -21,6 +21,9 @@ def get_donation_data():
         if creds_json:
             # Load from environment variable (suitable for Render)
             info = json.loads(creds_json)
+            # FIX: Ensure private_key handles newlines correctly
+            if 'private_key' in info:
+                info['private_key'] = info['private_key'].replace('\\n', '\n')
             creds = Credentials.from_service_account_info(info, scopes=scopes)
         elif os.path.exists(SERVICE_ACCOUNT_FILE):
             # Load from local file
