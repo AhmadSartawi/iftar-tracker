@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iftar Al-Rahma 3</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+        <h1>Iftar AlRahma 3</h1>
+
+        {% if error %}
+        <div class="alert">
+            ⚠️ Warning: App is running with mock data. Please configure service_account.json.
+        </div>
+        {% endif %}
+
+        <div class="card main-card">
+            <h3>Total Collected</h3>
+            <div class="total-amount">{{ "{:,.0f}".format(total) }} JOD</div>
+            <p>Target: {{ "{:,.0f}".format(target) }} JOD</p>
+
+            <div class="progress-container">
+                <div class="progress-bar" style="width: {{ progress }}%;">
+                    <span class="progress-text">{{ "{:.1f}".format(progress) }}%</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="top-donations">
+            <h3>🌟 Top 3 Donations</h3>
+            <div class="donation-list">
+                {% for amount in top_3 %}
+                <div class="donation-item">
+                    <span class="rank">#{{ loop.index }}</span>
+                    <span class="amount">{{ "{:,.0f}".format(amount) }} JOD</span>
+                </div>
+                {% endfor %}
+                {% if not top_3 %}
+                <p>No donations recorded yet.</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="footer">
+            Updates automatically on page refresh
+        </div>
+    </div>
+</body>
+
+</html>

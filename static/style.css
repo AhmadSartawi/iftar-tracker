@@ -1,0 +1,142 @@
+:root {
+    --primary-color: #FFD700;
+    /* Gold/Yellow */
+    --bg-color: #0d1117;
+    --card-bg: #161b22;
+    --text-color: #f0f6fc;
+    --text-muted: #8b949e;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.container {
+    width: 90%;
+    max-width: 500px;
+    text-align: center;
+    padding: 20px;
+}
+
+h1 {
+    margin-bottom: 30px;
+    font-size: 2.5rem;
+    color: var(--primary-color);
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+}
+
+.card {
+    background-color: var(--card-bg);
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+    margin-bottom: 30px;
+    border: 1px solid #30363d;
+}
+
+.total-amount {
+    font-size: 3.5rem;
+    font-weight: bold;
+    color: white;
+    margin: 10px 0;
+}
+
+.progress-container {
+    background-color: #30363d;
+    border-radius: 50px;
+    height: 35px;
+    width: 100%;
+    margin-top: 20px;
+    overflow: hidden;
+    position: relative;
+}
+
+.progress-bar {
+    background-color: var(--primary-color);
+    height: 100%;
+    transition: width 1s ease-in-out;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+}
+
+.progress-text {
+    color: #000;
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+.top-donations {
+    margin-top: 20px;
+}
+
+.donation-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.donation-item {
+    background-color: var(--card-bg);
+    padding: 15px 25px;
+    border-radius: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid #30363d;
+    transition: transform 0.2s;
+}
+
+.donation-item:hover {
+    transform: scale(1.02);
+    border-color: var(--primary-color);
+}
+
+.rank {
+    color: var(--primary-color);
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+.amount {
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.alert {
+    background-color: #6e5400;
+    color: white;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    font-size: 0.9rem;
+}
+
+.footer {
+    margin-top: 40px;
+    color: var(--text-muted);
+    font-size: 0.8rem;
+}
+
+@keyframes pulse {
+    0% {
+        opacity: 0.8;
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0.8;
+    }
+}
