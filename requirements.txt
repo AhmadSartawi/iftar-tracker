@@ -1,5 +1,8 @@
 flask
 gunicorn
-gspread
+pandas
+google-api-python-client
+google-auth-httplib2
+google-auth-oauthlib
 google-auth
-google-oauth2
+openpyxl
